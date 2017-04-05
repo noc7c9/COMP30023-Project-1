@@ -29,7 +29,7 @@ int linked_list_is_empty(LinkedList *ll) {
     return ll->len == 0;
 }
 
-void linked_list_push_start(LinkedList *ll, void *data) {
+Node *linked_list_push_start(LinkedList *ll, void *data) {
     Node *node = _new_node();
     node->data = data;
 
@@ -45,9 +45,11 @@ void linked_list_push_start(LinkedList *ll, void *data) {
     }
 
     ll->len++;
+
+    return node;
 }
 
-void linked_list_push_end(LinkedList *ll, void *data) {
+Node *linked_list_push_end(LinkedList *ll, void *data) {
     Node *node = _new_node();
     node->data = data;
 
@@ -63,43 +65,44 @@ void linked_list_push_end(LinkedList *ll, void *data) {
     }
 
     ll->len++;
+
+    return node;
+}
+
+Node *linked_list_insert_after(LinkedList *ll, Node *target, void *data) {
+    assert(target); // can only be added after an existing node
+
+    Node *node = _new_node();
+    node->data = data;
+
+    // point at neighbors
+    node->prev = target;
+    node->next = target->next;
+
+    // neighbors point at node
+    node->prev->next = node;
+    if (node->next != NULL) {
+        node->next->prev = node;
+    } else {
+        ll->tail = node;
+    }
+
+    ll->len++;
+
+    return node;
 }
 
 void *linked_list_pop_start(LinkedList *ll) {
-    // Node *node = ll->head;
-    // void *data = node->data;
-
-    // // fix head pointer
-    // ll->head = node->next;
-
-    // // also fix the tail pointer if necessary
-    // if (node->next == NULL) {
-    //     ll->tail = NULL;
-    // }
-
-    // free(node);
-
-    // ll->len--;
-
     return linked_list_pop(ll, ll->head);
 }
 
 void *linked_list_pop_end(LinkedList *ll) {
-    // Node *node = ll->tail;
-    // void *data = node->data;
-
-    // // fix tail pointer
-    // ll->tail = node->prev;
-
-
-    // free(node);
-
-    // ll->len--;
-
     return linked_list_pop(ll, ll->tail);
 }
 
 void *linked_list_pop(LinkedList *ll, Node *node) {
+    assert(node);
+
     void *data = node->data;
     Node *prev = node->prev;
     Node *next = node->next;

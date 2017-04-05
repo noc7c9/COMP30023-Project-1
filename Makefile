@@ -6,7 +6,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=gnu99
 
-OBJ = main.o argparse.o process.o proc_creator.o linked_list.o disk.o
+OBJ = main.o argparse.o process.o proc_creator.o linked_list.o disk.o memory.o
 EXE = swap
 
 ## Top level target is executable.
@@ -31,9 +31,10 @@ test: $(EXE)
 	./$(EXE) -f testdata/testWorst1 -a worst -m 1000 -q 7 | diff - testdata/testWorst1.out
 
 ## Dependencies
-main.o: argparse.h process.h proc_creator.h linked_list.h disk.h
+main.o: argparse.h process.h proc_creator.h linked_list.h disk.h memory.h
 argparse.o: argparse.h
 process.o: process.h
 proc_creator.o: proc_creator.h process.h
 linked_list.o: linked_list.h
 disk.o: disk.h process.h linked_list.h
+memory.o: memory.h process.h linked_list.h

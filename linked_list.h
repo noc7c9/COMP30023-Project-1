@@ -41,13 +41,21 @@ int linked_list_is_empty(LinkedList *ll);
 
 /*
  * Create a new node at the start of list.
+ * Returns the new node.
  */
-void linked_list_push_start(LinkedList *ll, void *data);
+Node *linked_list_push_start(LinkedList *ll, void *data);
 
 /*
  * Create a new node at the end of list.
+ * Returns the new node.
  */
-void linked_list_push_end(LinkedList *ll, void *data);
+Node *linked_list_push_end(LinkedList *ll, void *data);
+
+/*
+ * Create a new node right after the given target node.
+ * Returns the new node.
+ */
+Node *linked_list_insert_after(LinkedList *ll, Node *target, void *data);
 
 /*
  * Remove and return the node at the start of list.
