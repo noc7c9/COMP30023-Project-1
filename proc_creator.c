@@ -1,11 +1,17 @@
+/*
+ * COMP30023 Computer Systems Project 1
+ * Ibrahim Athir Saleem (682989)
+ *
+ * Please see the corresponding header file for documentation on the module.
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
 #include "process.h"
 #include "proc_creator.h"
-
-#define MAX_LINE_LENGTH 80
 
 void _ready_next_process(ProcCreator *pc);
 
@@ -19,13 +25,8 @@ ProcCreator *proc_creator_init(char *filepath) {
     assert(pc);
 
     pc->fpointer = fopen(filepath, "r");
-    if (pc->fpointer == NULL) {
-        printf("Opening %s: fail\n", filepath);
-    } else {
-        printf("Opening %s: success\n", filepath);
-    }
 
-    // about if opening the file failed
+    // abort if opening the file failed
     if (pc->fpointer == NULL) {
         free(pc);
         return NULL;
@@ -37,21 +38,31 @@ ProcCreator *proc_creator_init(char *filepath) {
     return pc;
 }
 
-Process *proc_creator_get_next(ProcCreator *pc, int current_time) {
-    Process *proc = NULL;
-
-    if (pc->next_proc->time_created >= current_time) {
-        proc = pc->next_proc;
+Process *proc_creator_get_next(ProcCreator *pc, int time) {
+    // if there is a process to be released, release it
+    if (proc_creator_has_next(pc, time)) {
+        Process *proc = pc->next_proc;
         _ready_next_process(pc);
+        return proc;
+    } else {
+    // otherwise return nothing
+        return NULL;
     }
-
-    return proc;
 }
 
-int proc_creator_has_next(ProcCreator *pc) {
-    return pc->next_proc != NULL;
+int proc_creator_has_next(ProcCreator *pc, int time) {
+    return pc->next_proc != NULL
+        && pc->next_proc->time_created == time;
 }
 
+int proc_creator_all_processes_released(ProcCreator *pc) {
+    return pc->next_proc == NULL;
+}
+
+/*
+ * Private helper function to parse the next line from the file into a process,
+ * and ready if for consumption.
+ */
 void _ready_next_process(ProcCreator *pc) {
     int time_created, process_id, memory_size, job_time;
     int read_values;

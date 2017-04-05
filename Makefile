@@ -22,7 +22,7 @@ clobber: clean
 	rm -f $(EXE)
 
 run: $(EXE)
-	./$(EXE) -f testdata/input.txt -a first -m 1000 -q 7
+	./$(EXE) -f testdata/testFirst1 -a first -m 1000 -q 7
 
 test: $(EXE)
 	./$(EXE) -f testdata/input.txt -a first -m 1000 -q 7 | diff - testdata/output.txt

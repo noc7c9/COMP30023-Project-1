@@ -33,13 +33,18 @@ ProcCreator *proc_creator_init(char *filepath);
  * The function takes the current time of the simulation and will only release
  * the process if appropriate.
  *
- * The process will be 
- * TODO: differentiate between there being more process to release at a time
+ * Returns the next process instance if there is one and NULL otherwise.
  */
 Process *proc_creator_get_next(ProcCreator *pc, int time);
 
 /*
- * Returns true if there are more processes to be read from the file.
- * And false if all the processes have been released.
+ * Returns true if the next process (if any) is to be released at the given time
+ * and false otherwise.
  */
-int proc_creator_has_next(ProcCreator *pc);
+int proc_creator_has_next(ProcCreator *pc, int time);
+
+/*
+ * Returns true if all the processes have been released
+ * and false if there are more processes to be read from the file.
+ */
+int proc_creator_all_processes_released(ProcCreator *pc);
