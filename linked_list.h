@@ -60,6 +60,12 @@ void *linked_list_pop_start(LinkedList *ll);
 void *linked_list_pop_end(LinkedList *ll);
 
 /*
+ * Removes and returns the given node from the list.
+ * ie. pop from anywhere in the list.
+ */
+void *linked_list_pop(LinkedList *ll, Node *node);
+
+/*
  * Print out the linked list and its contents.
  * The print_node function pointer can be NULL, in which case the void* pointer
  * will be printed out directly.

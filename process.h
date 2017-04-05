@@ -17,12 +17,13 @@ typedef struct {
     int process_id;
     int memory_size;
     int job_time;
+    int priority;
 } Process;
 
 /*
  * Used to create (allocate) a new process instance.
  */
-Process *process_init();
+Process *process_init(int time_created, int process_id, int memory_size, int job_time);
 
 /*
  * Used to deallocate the given process instance.

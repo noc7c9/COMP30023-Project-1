@@ -76,12 +76,6 @@ void _ready_next_process(ProcCreator *pc) {
         pc->next_proc = NULL;
     } else {
         // otherwise instantiate a new Process instance
-        pc->next_proc = process_init();
-
-        // and set its values
-        pc->next_proc->time_created = time_created;
-        pc->next_proc->process_id = process_id;
-        pc->next_proc->memory_size = memory_size;
-        pc->next_proc->job_time = job_time;
+        pc->next_proc = process_init(time_created, process_id, memory_size, job_time);
     }
 }

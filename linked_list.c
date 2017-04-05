@@ -66,34 +66,58 @@ void linked_list_push_end(LinkedList *ll, void *data) {
 }
 
 void *linked_list_pop_start(LinkedList *ll) {
-    Node *node = ll->head;
-    void *data = node->data;
+    // Node *node = ll->head;
+    // void *data = node->data;
 
-    // fix head pointer
-    ll->head = node->next;
+    // // fix head pointer
+    // ll->head = node->next;
 
-    // also fix the tail pointer if necessary
-    if (node->next == NULL) {
-        ll->tail = NULL;
-    }
+    // // also fix the tail pointer if necessary
+    // if (node->next == NULL) {
+    //     ll->tail = NULL;
+    // }
 
-    free(node);
+    // free(node);
 
-    ll->len--;
+    // ll->len--;
 
-    return data;
+    return linked_list_pop(ll, ll->head);
 }
 
 void *linked_list_pop_end(LinkedList *ll) {
-    Node *node = ll->tail;
+    // Node *node = ll->tail;
+    // void *data = node->data;
+
+    // // fix tail pointer
+    // ll->tail = node->prev;
+
+
+    // free(node);
+
+    // ll->len--;
+
+    return linked_list_pop(ll, ll->tail);
+}
+
+void *linked_list_pop(LinkedList *ll, Node *node) {
     void *data = node->data;
+    Node *prev = node->prev;
+    Node *next = node->next;
 
-    // fix tail pointer
-    ll->tail = node->prev;
+    // connect the next and prev of the node to be removed
+    if (prev != NULL) {
+        prev->next = next;
+    }
+    if (next != NULL) {
+        next->prev = prev;
+    }
 
-    // also fix the head pointer if necessary
-    if (node->prev == NULL) {
-        ll->head = NULL;
+    // fix the head and tail pointers if necessary
+    if (ll->head == node) {
+        ll->head = next;
+    }
+    if (ll->tail == node) {
+        ll->tail = prev;
     }
 
     free(node);

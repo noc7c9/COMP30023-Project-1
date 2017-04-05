@@ -12,9 +12,17 @@
 
 #include "process.h"
 
-Process *process_init() {
+Process *process_init(int time_created, int process_id, int memory_size, int job_time) {
     Process *proc = (Process*)malloc(sizeof(Process));
     assert(proc);
+
+    proc->time_created = time_created;
+    proc->process_id = process_id;
+    proc->memory_size = memory_size;
+    proc->job_time = job_time;
+
+    // a lower process_id is considered a higher priority
+    proc->priority = -process_id;
 
     return proc;
 }
