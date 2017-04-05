@@ -6,7 +6,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=gnu99
 
-OBJ = main.o
+OBJ = main.o argparse.o
 EXE = swap
 
 ## Top level target is executable.
@@ -31,4 +31,4 @@ test: $(EXE)
 	./$(EXE) -f testdata/testWorst1 -a worst -m 1000 -q 7 | diff - testdata/testWorst1.out
 
 ## Dependencies
-main.o:
+main.o: argparse.h
