@@ -6,7 +6,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=gnu99
 
-OBJ = main.o argparse.o process.o proc_creator.o
+OBJ = main.o argparse.o process.o proc_creator.o linked_list.o
 EXE = swap
 
 ## Top level target is executable.
@@ -32,3 +32,7 @@ test: $(EXE)
 
 ## Dependencies
 main.o: argparse.h process.h proc_creator.h
+argparse.o: argparse.h
+process.o: process.h
+proc_creator.o: proc_creator.h process.h
+linked_list.o: linked_list.h
