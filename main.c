@@ -172,7 +172,7 @@ int main() {
         int size;
     } TestMemory;
 
-    Memory *mem = memory_init(1000);
+    Memory *mem = memory_init(1000, "first");
     TEST("initial memory is empty", 1, memory_is_empty(mem));
 
     memory_swap_in(mem, process_init(-1, 1, 200, -1));

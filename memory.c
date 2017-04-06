@@ -268,9 +268,9 @@ void _merge_adjecent(Memory *mem, Node* chunk_node) {
         first_chunk->size = last_chunk->start + last_chunk->size - first_chunk->start;
 
         // remove all other nodes
-        while (first != last) {
-            first = first->next;
-            linked_list_pop(mem->chunks, first);
+        while (last != first) {
+            last = last->prev;
+            linked_list_pop(mem->chunks, last->next);
         }
     }
 }
