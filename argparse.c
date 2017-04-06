@@ -21,8 +21,8 @@ Args parse_args(int argc, char *argv[]) {
     // initialize args struct
     args.filename = NULL;
     args.algorithm = NULL;
-    args.memsize = 0;
-    args.quantum = 0;
+    args.memsize = -1;
+    args.quantum = -1;
 
     // parse and populate the struct using getopt
     while ((input = getopt(argc, argv, "f:a:m:q:")) != EOF) {

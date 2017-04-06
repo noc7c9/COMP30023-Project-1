@@ -69,6 +69,9 @@ Memory *memory_init(int size, char *algorithm) {
         case 'w':
             mem->algorithm = _worst_fit;
             break;
+        default: // default to first fit
+            mem->algorithm = _first_fit;
+            break;
     }
 
     // initialize chunks list with a single chunk representing the whole memory

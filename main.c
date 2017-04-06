@@ -75,6 +75,12 @@ int my_ceil(double v) {
 int main(int argc, char *argv[]) {
     Args args = parse_args(argc, argv);
 
+    // ensure arguments are correct
+    assert(args.algorithm != NULL);
+    assert(args.filename != NULL);
+    assert(args.quantum > 0);
+    assert(args.memsize > 0);
+
     Disk *disk = disk_init();
     Memory *mem = memory_init(args.memsize, args.algorithm);
     ProcCreator *pc = proc_creator_init(args.filename);
