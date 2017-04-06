@@ -64,6 +64,11 @@ int memory_numholes(Memory *mem);
 double memory_memusage(Memory *mem);
 
 /*
+ * Used to deallocate the memory instance.
+ */
+void memory_destroy(Memory *mem);
+
+/*
  * Print out the memory contents.
  * For use in debugging.
  */

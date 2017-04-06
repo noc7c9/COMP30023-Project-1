@@ -39,6 +39,11 @@ void disk_swap_in(Disk *disk, Process *proc, int time);
 Process *disk_swap_out(Disk *disk);
 
 /*
+ * Used to deallocate the disk instance.
+ */
+void disk_destroy(Disk *disk);
+
+/*
  * Print out the disk contents.
  * For use in debugging.
  */

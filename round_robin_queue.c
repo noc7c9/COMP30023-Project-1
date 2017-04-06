@@ -63,6 +63,16 @@ Process *rrqueue_remove(RRQueue *rrqueue, Process *proc) {
     return NULL;
 }
 
+void rrqueue_destroy(RRQueue *rrqueue) {
+    while (!rrqueue_is_empty(rrqueue)) {
+        rrqueue_pop(rrqueue);
+    }
+
+    linked_list_destroy(rrqueue->processes);
+
+    free(rrqueue);
+}
+
 /*
  * Helper to print out Process instances when printing the queue.
  */

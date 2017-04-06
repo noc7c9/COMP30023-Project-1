@@ -90,42 +90,32 @@ int memory_swap_in(Memory *mem, Process *proc) {
     }
 
     // a valid chunk was found
-    Chunk *chunk = node->data;
 
     // first add the process to the list of processes
     _MemProcess *mprocess = (_MemProcess*)malloc(sizeof(_MemProcess));
     assert(mprocess);
 
     mprocess->process = proc;
-    mprocess->chunk_node = NULL; // will be set later in the function
 
     // newest process goes on the end
     linked_list_push_end(mem->processes, mprocess);
 
-    // if the chunk is exactly the required size, reuse it
-    if (chunk->size == proc->memory_size) {
-        chunk->process = proc;
-        mprocess->chunk_node = node;
+    // update the memory arrangement
 
-        return 1; // return success
+    // reuse the found chunk to be in use by the process
+    Chunk *chunk = node->data;
+    int remaining_free_memory = chunk->size - proc->memory_size;
+    chunk->process = proc;
+    chunk->size = proc->memory_size;
+    mprocess->chunk_node = node;
+
+    // if necessary also insert a new chunk to represent the remaining free
+    // memory
+    if (remaining_free_memory > 0) {
+        linked_list_insert_after(mem->chunks, node,
+                _new_chunk(chunk->start + proc->memory_size,
+                    remaining_free_memory, NULL));
     }
-
-    // otherwise split it into two new chunks
-
-    // add a new chunk as in use by the proc
-    // (inserted after the old chunk)
-    Node *used = linked_list_insert_after(mem->chunks, node,
-            _new_chunk(chunk->start, proc->memory_size, proc));
-    mprocess->chunk_node = used;
-
-    // add another chunk for the remaining free memory
-    // (inserted after the new used chunk)
-    linked_list_insert_after(mem->chunks, used,
-            _new_chunk(chunk->start + proc->memory_size,
-                chunk->size - proc->memory_size, NULL));
-
-    // then remove the old chunk
-    linked_list_pop(mem->chunks, node);
 
     return 1; // return success
 }
@@ -183,6 +173,20 @@ double memory_memusage(Memory *mem) {
         node = node->next;
     }
     return 100.0 * used / mem->size;
+}
+
+void memory_destroy(Memory *mem) {
+    while (!memory_is_empty(mem)) {
+        memory_swap_out_oldest(mem);
+    }
+
+    // there should be only one chunk left
+    free(linked_list_pop_start(mem->chunks));
+
+    linked_list_destroy(mem->processes);
+    linked_list_destroy(mem->chunks);
+
+    free(mem);
 }
 
 /*
@@ -270,7 +274,7 @@ void _merge_adjecent(Memory *mem, Node* chunk_node) {
         // remove all other nodes
         while (last != first) {
             last = last->prev;
-            linked_list_pop(mem->chunks, last->next);
+            free(linked_list_pop(mem->chunks, last->next));
         }
     }
 }

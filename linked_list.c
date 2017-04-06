@@ -130,6 +130,14 @@ void *linked_list_pop(LinkedList *ll, Node *node) {
     return data;
 }
 
+void linked_list_destroy(LinkedList *ll) {
+    while (!linked_list_is_empty(ll)) {
+        linked_list_pop_start(ll);
+    }
+
+    free(ll);
+}
+
 void linked_list_print(LinkedList *ll, void (*print_node)(void*)) {
     printf("List(\n");
     Node *n = ll->head;

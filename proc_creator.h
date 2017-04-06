@@ -48,3 +48,8 @@ int proc_creator_has_next(ProcCreator *pc, int time);
  * and false if there are more processes to be read from the file.
  */
 int proc_creator_all_processes_released(ProcCreator *pc);
+
+/*
+ * Used to deallocate a ProcCreator.
+ */
+void proc_creator_destroy(ProcCreator *pc);

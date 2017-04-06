@@ -11,6 +11,8 @@ CFLAGS = -Wall -Wextra -std=gnu99
 OBJ = main.o argparse.o process.o proc_creator.o linked_list.o disk.o memory.o round_robin_queue.o
 EXE = swap
 
+VALGRIND_OPTS = -v --leak-check=full
+
 ## Top level target is executable.
 $(EXE): $(OBJ)
 	$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
@@ -33,6 +35,13 @@ test: $(EXE)
 	./$(EXE) -f testdata/testFirst1 -a first -m 1000 -q 7 | diff - testdata/testFirst1.out
 	./$(EXE) -f testdata/testBest1 -a best -m 1000 -q 7 | diff - testdata/testBest1.out
 	./$(EXE) -f testdata/testWorst1 -a worst -m 1000 -q 7 | diff - testdata/testWorst1.out
+
+## Valgrind
+valgrind: $(EXE)
+	valgrind $(VALGRIND_OPTS) --log-file=valgrind.1.log ./$(EXE) -f testdata/input.txt -a first -m 1000 -q 7
+	valgrind $(VALGRIND_OPTS) --log-file=valgrind.2.log ./$(EXE) -f testdata/testFirst1 -a first -m 1000 -q 7
+	valgrind $(VALGRIND_OPTS) --log-file=valgrind.3.log ./$(EXE) -f testdata/testBest1 -a best -m 1000 -q 7
+	valgrind $(VALGRIND_OPTS) --log-file=valgrind.4.log ./$(EXE) -f testdata/testWorst1 -a worst -m 1000 -q 7
 
 ## Dependencies
 main.o: argparse.h process.h proc_creator.h linked_list.h disk.h memory.h round_robin_queue.h

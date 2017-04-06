@@ -85,6 +85,16 @@ Process *disk_swap_out(Disk *disk) {
     return proc;
 }
 
+void disk_destroy(Disk *disk) {
+    while (!disk_is_empty(disk)) {
+        disk_swap_out(disk);
+    }
+
+    linked_list_destroy(disk->processes);
+
+    free(disk);
+}
+
 /*
  * Helper to print out the _DiskProcess instances when printing the whole disk.
  */

@@ -26,6 +26,7 @@
  */
 
 #include <stdio.h>
+#include <assert.h>
 
 #include "argparse.h"
 #include "process.h"
@@ -167,6 +168,19 @@ int main(int argc, char *argv[]) {
     }
 
     printf("time %d, simulation finished.\n", (time - 1));
+
+    // successful simulation checks
+    assert(proc_creator_all_processes_released(pc));
+    assert(disk_is_empty(disk));
+    assert(memory_is_empty(mem));
+    assert(rrqueue_is_empty(rrqueue));
+    assert(NULL == cpu_proc);
+
+    // now free everything
+    disk_destroy(disk);
+    memory_destroy(mem);
+    proc_creator_destroy(pc);
+    rrqueue_destroy(rrqueue);
 
     return 0;
 }

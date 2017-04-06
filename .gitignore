@@ -1,2 +1,3 @@
 swap
 *.o
+valgrind.*.log

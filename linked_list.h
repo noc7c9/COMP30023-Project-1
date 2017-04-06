@@ -74,6 +74,12 @@ void *linked_list_pop_end(LinkedList *ll);
 void *linked_list_pop(LinkedList *ll, Node *node);
 
 /*
+ * Used to deallocate the given linked list.
+ * Warning: This will not free the contents of Node->data.
+ */
+void linked_list_destroy(LinkedList *ll);
+
+/*
  * Print out the linked list and its contents.
  * The print_node function pointer can be NULL, in which case the void* pointer
  * will be printed out directly.

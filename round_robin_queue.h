@@ -47,6 +47,11 @@ Process *rrqueue_pop(RRQueue *rrqueue);
 Process *rrqueue_remove(RRQueue *rrqueue, Process *proc);
 
 /*
+ * Used to deallocate the given RRQueue instance.
+ */
+void rrqueue_destroy(RRQueue *rrqueue);
+
+/*
  * Print out the queue contents.
  * For use in debugging.
  */

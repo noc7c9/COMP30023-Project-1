@@ -59,6 +59,16 @@ int proc_creator_all_processes_released(ProcCreator *pc) {
     return pc->next_proc == NULL;
 }
 
+void proc_creator_destroy(ProcCreator *pc) {
+    if (pc->next_proc != NULL) {
+        process_destroy(pc->next_proc);
+    }
+
+    fclose(pc->fpointer);
+
+    free(pc);
+}
+
 /*
  * Private helper function to parse the next line from the file into a process,
  * and ready if for consumption.
