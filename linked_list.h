@@ -1,6 +1,6 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
  * A generic doubly linked list implementation. Uses a Node struct as the
  * elements of the list, each Node having a void* field called data for

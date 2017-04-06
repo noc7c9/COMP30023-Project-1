@@ -1,6 +1,6 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
  * The module responsible for reading the process descriptions from the file,
  * creating the individual process instances and finally releasing them to the

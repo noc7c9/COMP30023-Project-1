@@ -1,6 +1,6 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
  * The disk module. Stores process in queue but popping takes into account the
  * priority if there are ties for oldest process in queue.

@@ -1,6 +1,6 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
  * The module defines the Process object, which is the data structure used to
  * represent the simulated process in all other parts of the program.

@@ -1,6 +1,8 @@
 #
-# Computer Systems Project 1 Makefile
-# Ibrahim Athir Saleem (682989)
+# COMP30023 Computer Systems Project 1
+# Ibrahim Athir Saleem (isaleem) (682989)
+#
+# Makefile
 #
 
 CC = gcc
@@ -21,9 +23,11 @@ clean:
 clobber: clean
 	rm -f $(EXE)
 
+## Run
 run: $(EXE)
 	./$(EXE) -f testdata/testFirst1 -a first -m 1000 -q 7
 
+## Test
 test: $(EXE)
 	./$(EXE) -f testdata/input.txt -a first -m 1000 -q 7 | diff - testdata/output.txt
 	./$(EXE) -f testdata/testFirst1 -a first -m 1000 -q 7 | diff - testdata/testFirst1.out

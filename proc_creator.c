@@ -1,6 +1,6 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
  * Please see the corresponding header file for documentation on the module.
  *

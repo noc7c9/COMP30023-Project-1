@@ -1,8 +1,27 @@
 /*
  * COMP30023 Computer Systems Project 1
- * Ibrahim Athir Saleem (682989)
+ * Ibrahim Athir Saleem (isaleem) (682989)
  *
- * TODO: write up a program description
+ * Memory management simulation.
+ *
+ * This program takes in an input file describing the process that need to be
+ * created over the course of the simulation. The file should have once process
+ * on every line, in the format "time-created process-id memory-size job-time"
+ * where each property is an integer.
+ * eg:
+ *     0 3 85 30
+ *     5 1 100 20
+ *     20 6 225 15
+ *     24 10 50 14
+ *
+ * The program also can use one of three algorithms for memory allocation,
+ * first fit, best fit and worst fit.
+ *
+ * Usage: ./swap -f INPUT_FILE -a ALGO -q QUANTUM -m MEMSIZE
+ *   INPUT_FILE: file to read processes from
+ *         ALGO: one of "first", "best" or "worst"
+ *      QUANTUM: quantum for process using cpu
+ *      MEMSIZE: the total size of the simulated memory
  *
  */
 
