@@ -18,6 +18,7 @@ struct Memory {
     LinkedList *chunks;
     LinkedList *processes;
     int size;
+    Node *(*algorithm)(Memory*, int);
 };
 
 /*
@@ -46,14 +47,29 @@ void _merge_adjecent(Memory *mem, Node* chunk_node);
 Process *_remove_mem_process(Memory *mem, _MemProcess *mprocess);
 
 Node *_first_fit(Memory *mem, int size);
+Node *_best_fit(Memory *mem, int size);
+Node *_worst_fit(Memory *mem, int size);
 
-Memory *memory_init(int size) {
+Memory *memory_init(int size, char *algorithm) {
     Memory *mem = (Memory*)malloc(sizeof(Memory));
     assert(mem);
 
     mem->processes = linked_list_init();
     mem->chunks = linked_list_init();
     mem->size = size;
+
+    // for simplicity's sake just check the first character
+    switch (algorithm[0]) {
+        case 'f':
+            mem->algorithm = _first_fit;
+            break;
+        case 'b':
+            mem->algorithm = _best_fit;
+            break;
+        case 'w':
+            mem->algorithm = _worst_fit;
+            break;
+    }
 
     // initialize chunks list with a single chunk representing the whole memory
     linked_list_push_start(mem->chunks, _new_chunk(0, size, NULL));
@@ -66,7 +82,7 @@ int memory_is_empty(Memory *mem) {
 }
 
 int memory_swap_in(Memory *mem, Process *proc) {
-    Node *node = _first_fit(mem, proc->memory_size);
+    Node *node = mem->algorithm(mem, proc->memory_size);
 
     // if no valid chunk was found, return false
     if (node == NULL) {
@@ -136,6 +152,37 @@ Process *memory_swap_out_oldest(Memory *mem) {
     _MemProcess *mprocess = linked_list_pop_start(mem->processes);
 
     return _remove_mem_process(mem, mprocess);
+}
+
+int memory_numprocesses(Memory *mem) {
+    Node *node = mem->processes->head;
+    int n = 0;
+    while (node) {
+        n++;
+        node = node->next;
+    }
+    return n;
+}
+
+int memory_numholes(Memory *mem) {
+    Node *node = mem->chunks->head;
+    int n = 0;
+    while (node) {
+        n += (((Chunk*)node->data)->process == NULL);
+        node = node->next;
+    }
+    return n;
+}
+
+double memory_memusage(Memory *mem) {
+    Node *node = mem->chunks->head;
+    int used = 0;
+    while (node) {
+        Process *proc = ((Chunk*)node->data)->process;
+        used += (proc == NULL) ? 0 : proc->memory_size;
+        node = node->next;
+    }
+    return 100.0 * used / mem->size;
 }
 
 /*
@@ -230,7 +277,8 @@ void _merge_adjecent(Memory *mem, Node* chunk_node) {
 
 /*
  * The first fit memory placement implementation.
- * Returns the matching node from the list of chunks.
+ * Finds the first free chunk thats large enough from the list of chunks.
+ * Returns the node of that chunk.
  */
 Node *_first_fit(Memory *mem, int required_size) {
     Node *node = mem->chunks->head;
@@ -244,4 +292,52 @@ Node *_first_fit(Memory *mem, int required_size) {
     }
 
     return NULL;
+}
+
+/*
+ * The best fit memory placement implementation.
+ * Finds the smallest free chunk thats large enough from the list of chunks.
+ * Returns the node of that chunk.
+ */
+Node *_best_fit(Memory *mem, int required_size) {
+    Node *smallest = NULL;
+
+    Node *node = mem->chunks->head;
+    while (node != NULL) {
+        Chunk *chunk = (Chunk *)node->data;
+        if (chunk->process == NULL && chunk->size >= required_size) {
+            if (smallest == NULL
+                    || chunk->size < ((Chunk *)smallest->data)->size) {
+                smallest = node;
+            }
+        }
+
+        node = node->next;
+    }
+
+    return smallest;
+}
+
+/*
+ * The worst fit memory placement implementation.
+ * Finds the biggest free chunk thats large enough from the list of chunks.
+ * Returns the node of that chunk.
+ */
+Node *_worst_fit(Memory *mem, int required_size) {
+    Node *biggest = NULL;
+
+    Node *node = mem->chunks->head;
+    while (node != NULL) {
+        Chunk *chunk = (Chunk *)node->data;
+        if (chunk->process == NULL && chunk->size >= required_size) {
+            if (biggest == NULL
+                    || chunk->size > ((Chunk *)biggest->data)->size) {
+                biggest = node;
+            }
+        }
+
+        node = node->next;
+    }
+
+    return biggest;
 }

@@ -20,8 +20,10 @@ typedef struct Memory Memory;
 
 /*
  * Create a new empty memory instance of the given size.
+ * Also takes the memory hole selection algorithm.
+ * (one of "first", "best" or "worst")
  */
-Memory *memory_init(int size);
+Memory *memory_init(int size, char *algorithm);
 
 /*
  * Returns true if there are no processes in memory.
@@ -45,6 +47,21 @@ Process *memory_swap_out_process(Memory *mem, Process *proc);
  * Removes and returns the process that has been in memory the longest.
  */
 Process *memory_swap_out_oldest(Memory *mem);
+
+/*
+ * Returns the number of processes in memory.
+ */
+int memory_numprocesses(Memory *mem);
+
+/*
+ * Returns the number of free chunks in memory.
+ */
+int memory_numholes(Memory *mem);
+
+/*
+ * Returns the percentage of in-used memory.
+ */
+double memory_memusage(Memory *mem);
 
 /*
  * Print out the memory contents.

@@ -228,11 +228,19 @@ int main() {
 }
 
 #else
+int ceil(double v) {
+    if ((v - (int)v) > 0) {
+        return (int)(v + 1);
+    } else {
+        return (int)v;
+    }
+}
+
 int main(int argc, char *argv[]) {
     Args args = parse_args(argc, argv);
 
     Disk *disk = disk_init();
-    Memory *mem = memory_init(args.memsize);
+    Memory *mem = memory_init(args.memsize, args.algorithm);
     ProcCreator *pc = proc_creator_init(args.filename);
     RRQueue *rrqueue = rrqueue_init();
     if (pc == NULL) {
@@ -284,11 +292,12 @@ int main(int argc, char *argv[]) {
                 }
 
                 // Also log the load into memory event
-                printf("time %d, %d loaded, numprocesses=d, numholes=d, memusage=d%%\n",
-                    time, proc_to_load->process_id);
-                    // memory.get_numprocesses(),
-                    // memory.get_numholes(),
-                    // math.ceil(memory.get_memusage())))
+                printf("time %d, %d loaded, "
+                        "numprocesses=%d, numholes=%d, memusage=%d%%\n",
+                    time, proc_to_load->process_id,
+                    memory_numprocesses(mem),
+                    memory_numholes(mem),
+                    ceil(memory_memusage(mem)));
             }
 
             // Schedule section
