@@ -76,7 +76,13 @@ Process *disk_swap_out(Disk *disk) {
         other_node = other_node->next;
     }
 
-    return ((_DiskProcess*)linked_list_pop(disk->processes, node_to_swap))->process;
+    _DiskProcess *dprocess = (_DiskProcess*)linked_list_pop(
+            disk->processes, node_to_swap);
+    Process *proc = dprocess->process;
+
+    free(dprocess);
+
+    return proc;
 }
 
 /*

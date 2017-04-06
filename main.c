@@ -228,7 +228,7 @@ int main() {
 }
 
 #else
-int ceil(double v) {
+int my_ceil(double v) {
     if ((v - (int)v) > 0) {
         return (int)(v + 1);
     } else {
@@ -297,7 +297,7 @@ int main(int argc, char *argv[]) {
                     time, proc_to_load->process_id,
                     memory_numprocesses(mem),
                     memory_numholes(mem),
-                    ceil(memory_memusage(mem)));
+                    my_ceil(memory_memusage(mem)));
             }
 
             // Schedule section
